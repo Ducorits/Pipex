@@ -1,30 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_printnbr.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/11/06 15:40:28 by dritsema      #+#    #+#                 */
+/*   Updated: 2021/11/09 13:25:24 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include "libft.h"
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+static int	recurse(unsigned int n)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
+	int	count;
 
-	if (argc > 1)
+	count = 0;
+	if (n > 9)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		count = recurse(n / 10);
 	}
-	return (0);
+	n = n % 10 + 48;
+	return (count + write(1, &n, 1));
+}
+
+int	ft_printnbr(int n)
+{
+	unsigned int	ncpy;
+	int				count;
+
+	count = 0;
+	ncpy = n;
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		ncpy = n * -1;
+		count++;
+	}
+	count += recurse(ncpy);
+	return (count);
 }

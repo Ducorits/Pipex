@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_upprinthex.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/11/06 15:26:18 by dritsema      #+#    #+#                 */
+/*   Updated: 2021/12/10 14:02:43 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include "libft.h"
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+int	ft_upprinthex(unsigned long n)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
+	int	count;
 
-	if (argc > 1)
+	count = 0;
+	if (n > 15)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		count = ft_upprinthex(n / 16);
 	}
-	return (0);
+	if ((n % 16) < 10)
+	{
+		n = (n % 16) + 48;
+		write(1, &n, 1);
+		count++;
+	}
+	if ((n % 16) >= 10)
+	{
+		n = (n % 16) - 10 + 'A';
+		write(1, &n, 1);
+		count++;
+	}
+	return (count);
 }

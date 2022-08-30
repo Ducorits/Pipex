@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/10/08 19:16:42 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/08 00:31:58 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
 #include "libft.h"
-#include <unistd.h>
 
-int	main(int argc, char **argv)
+/**
+ * @brief Writes n zeroed bytes to the string s. If n is zero, do nothing.
+ *
+ * @param s String to write to.
+ * @param n Amount to write.
+ */
+void	ft_bzero(void *s, size_t n)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
+	unsigned char	*a;
 
-	if (argc > 1)
+	a = s;
+	while (n > 0)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		*a = '\0';
+		a++;
+		n--;
 	}
-	return (0);
 }

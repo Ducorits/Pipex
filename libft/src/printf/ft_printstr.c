@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_printstr.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/11/06 15:45:58 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/16 13:45:49 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include "libft.h"
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+static size_t	ft_strlen(const char *s)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
+	size_t	i;
 
-	if (argc > 1)
-	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
-	}
-	return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+int	ft_printstr(char *s)
+{
+	int	slen;
+
+	if (!s)
+		return (write(1, "(null)", 6));
+	slen = ft_strlen(s);
+	return (write(1, s, slen));
 }

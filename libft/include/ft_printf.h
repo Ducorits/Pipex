@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_printf.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/12/10 13:37:12 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/18 22:23:42 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include "libft.h"
-#include <unistd.h>
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-int	main(int argc, char **argv)
-{
-	int		len;
-	char *const	env[] = {"hoi\0"};
+int	ft_printf(const char *s, ...);
+int	ft_printhex(unsigned long n);
+int	ft_upprinthex(unsigned long n);
+int	ft_printun(unsigned int n);
+int	ft_printchar(char c);
+int	ft_printnbr(int n);
+int	ft_printstr(char *s);
 
-	if (argc > 1)
-	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
-	}
-	return (0);
-}
+#endif // FT_PRINTF_H

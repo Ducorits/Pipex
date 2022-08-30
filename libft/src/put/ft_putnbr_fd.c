@@ -1,30 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_putnbr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/10/23 15:57:11 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/07 16:26:18 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
 #include "libft.h"
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+static void	recurse(unsigned int n, int fd)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
-
-	if (argc > 1)
+	if (n > 9)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		recurse(n / 10, fd);
 	}
-	return (0);
+	n = n % 10 + 48;
+	write(fd, &n, 1);
+}
+
+/**
+ * @brief Outputs the integer ’n’ to the given file descriptor.
+ *
+ * @param n The integer to output.
+ * @param fd The file descriptor on which to write.
+ */
+void	ft_putnbr_fd(int n, int fd)
+{
+	unsigned int	ncpy;
+
+	ncpy = n;
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		ncpy = n * -1;
+	}
+	recurse(ncpy, fd);
 }

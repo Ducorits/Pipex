@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstsize.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/10/26 13:43:23 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/08 00:27:44 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
 #include "libft.h"
-#include <unistd.h>
 
-int	main(int argc, char **argv)
+/**
+ * @brief Counts the number of nodes in a list.
+ *
+ * @param lst The beginning of the list.
+ * @return The length of the list
+ */
+int	ft_lstsize(t_list *lst)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
+	int	i;
 
-	if (argc > 1)
+	i = 0;
+	while (lst)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		lst = lst->next;
+		i++;
 	}
-	return (0);
+	return (i);
 }

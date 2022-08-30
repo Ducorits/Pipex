@@ -16,6 +16,8 @@ INSET	= $(BEGIN)$(GREEN)+ $(BLUE)
 
 NAME		=	pipex
 
+LIBFT		=	libft/libft.a
+
 SRCS		=	main.c
 
 INC			=	-I ./include
@@ -26,7 +28,11 @@ COMPILED	=	0
 
 DONE_OBJS	=	$(wildcard obj/*.o)
 
+ifeq ($(words $(filter-out $(DONE_OBJS), $(OBJS))), 0)
+TO_COMPILE	=	1
+else
 TO_COMPILE	=	$(words $(filter-out $(DONE_OBJS), $(OBJS)))
+endif
 
 PERCENT		=	$(INSET)$(CYAN)$(shell echo \
 				$$(($(COMPILED)*100/$(TO_COMPILE)))%%)
@@ -39,7 +45,7 @@ endif
 
 all: heading status comp
 
-.PHONY: heading status comp clean fclean re
+.PHONY: heading status comp clean fclean re rere libft
 
 comp: $(NAME)
 
@@ -57,10 +63,21 @@ obj/%.o: src/%.c
 	$(eval COMPILED=$(shell echo $$(($(COMPILED)+1))))
 	@printf "$(PERCENT) $(BLUE)Compiling: $(GREEN)%s$(RESET)\n" "$^"
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
 	@printf "$(INSET)"
 	@$(CC) $(CFLAGS) $(INC) $^ -o $@
 	@printf "$(ORANGE)Created executable.\n"
+
+libft:
+	@make -C libft/ SILENT=1
+	@cp libft/include/libft.h include/libft.h
+
+$(LIBFT):
+	@make -C libft/ SILENT=1
+	@cp libft/include/libft.h include/libft.h
+
+depclean:
+	@make -C libft/ fclean SILENT=1
 
 clean: heading
 	@rm -rf obj
@@ -71,3 +88,5 @@ fclean: clean
 	@printf "$(RED)- $(BLUE)Removed executable file.\n$(RESET)"
 
 re: fclean comp
+
+rere: fclean depclean comp

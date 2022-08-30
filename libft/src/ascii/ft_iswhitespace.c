@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_iswhitespace.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2022/06/07 12:51:20 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/07 23:35:51 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include "libft.h"
-#include <unistd.h>
-
-int	main(int argc, char **argv)
+/**
+ * @brief Tests for whitespace characters.
+ *
+ * @param c The character to test.
+ * @return 1 if 'c' is a whitespace character, 0 otherwise.
+ */
+int	ft_iswhitespace(char c)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
-
-	if (argc > 1)
-	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
-	}
-	return (0);
+	return (c == ' ' || c == '\t' || c == '\r' || c == '\n'
+		|| c == '\v' || c == '\f');
 }

@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstiter.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/10/26 18:05:58 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/08 00:17:03 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
 #include "libft.h"
-#include <unistd.h>
 
-int	main(int argc, char **argv)
+/**
+ * @brief Iterates the list ’lst’ and applies the function
+ * ’f’ on the content of each node.
+ *
+ * @param lst The address of a pointer to a node.
+ * @param f The address of the function used to iterate on the list.
+ */
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
-
-	if (argc > 1)
+	if (lst)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
+		f(lst->content);
+		ft_lstiter(lst->next, f);
 	}
-	return (0);
 }

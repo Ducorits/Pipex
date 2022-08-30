@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstadd_front.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/08/30 17:54:46 by dritsema      ########   odam.nl         */
+/*   Created: 2021/10/26 13:34:08 by dritsema      #+#    #+#                 */
+/*   Updated: 2022/06/08 00:08:14 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
 #include "libft.h"
-#include <unistd.h>
 
-int	main(int argc, char **argv)
+/**
+ * @brief Adds the node ’new’ at the beginning of the list.
+ *
+ * @param lst The address of a pointer to the first link of a list.
+ * @param lstnew The address of a pointer to the node to be added to the list.
+ */
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	int		len;
-	char *const	env[] = {"hoi\0"};
-
-	if (argc > 1)
-	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		execve("ls", &argv[1], env);
-	}
-	return (0);
+	new->next = *lst;
+	*lst = new;
 }
