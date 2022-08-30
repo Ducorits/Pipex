@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/dritsema/Documents/Pipex'
+make: Leaving directory `/Users/dritsema/Documents/Pipex'
+ 
+make: *** No targets.  Stop.
+
