@@ -1,0 +1,39 @@
+The program has to open the "infile" and the "outfile".
+It has to make a pipe. It can do it with only one pipe.
+It needs to fork into 2 commands.
+Redirect the pipe from the output of one command to the input of the other.
+Redirect the standard input of the first command to the infile.
+Redirect the output of the second command to outfile.
+It has to close the pipes.
+
+The input needs to be parsed.
+
+./pipex infile "ls -la" "wc -l" outfile
+
+The input would be:
+argv[0] = "./pipex"
+argv[1] = "infile"
+argv[2] = "ls -la"
+argv[3] = "wc -l"
+argv[4] = "outfile"
+
+What does execve need?
+Execve needs the path to the executable, it needs the arguments for the executable, and it needs a pointer to the environments variables.
+
+so for ls:
+execve("bin/ls", {"ls" "-la", NULL}, envp);
+
+for wc:
+execve("bin/wc", {"wc" "-l", NULL}, envp);
+
+envp would look something like this:
+
+SHELL=/bin/zsh
+TERM_PROGRAM_VERSION=3.4.16
+TERM_PROGRAM=iTerm.app
+PATH=/Users/dritsema/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/opt/X11/bin:/Users/dritsema/.brew/opt/fzf/bin
+HOME=/Users/dritsema
+USER=dritsema
+LOGNAME=dritsema
+
+Thats it for now...
