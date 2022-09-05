@@ -6,16 +6,18 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/05 12:51:36 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:15:28 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "libft.h"
 #include <unistd.h>
+#include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 int	free_pointer_array(char **array)
 {
@@ -62,7 +64,6 @@ char	*get_path(char **envp, char *cmd)
 		cmd_path = ft_strjoin(paths[i], suffix);
 		if (!access(cmd_path, X_OK))
 		{
-			// ft_printf("%s\n", cmd_path);
 			free(suffix);
 			free_pointer_array(paths);
 			return (cmd_path);
@@ -86,35 +87,31 @@ void	pipex(int fd1, int fd2, char **argv, char **envp)
 		return (perror("Fork: "));
 	if (pid == 0)
 	{
-		// ft_printf("child\n");
 		first_process(fd1, end, argv, envp);
 	}
 	else
 	{
 		waitpid(pid, NULL, 0);
-		// ft_printf("parent, %i\n", fd2);
 		last_process(fd2, end, argv, envp);
 	}
-	// close(end[0]);
-	// close(end[1]);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	// int		len;
 	int		fds[2];
-	// char * const	args[] = {NULL};
 
-	fds[0] = open("./infile", O_RDONLY);
-	fds[1] = open("./outfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	if (argc > 4)
+	if (argc == 5)
 	{
-		// len = ft_strlen(argv[1]);
-		// write(1, argv[1], len);
-		// write(1, "\n", 1);
+		fds[0] = open(argv[1], O_RDONLY);
+		fds[1] = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0600);
+		if (fds[0] == -1)
+		{
+			ft_printf("%s: %s: %s\n", argv[0], argv[1], strerror(errno));
+			return (1);
+		}
 		pipex(fds[0], fds[1], argv, envp);
 	}
-	close(fds[0]);
-	close(fds[1]);
+	else
+		ft_printf("%s: Incorrect argument count\n", argv[0]);
 	return (0);
 }

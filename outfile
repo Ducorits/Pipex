@@ -1,10 +1,1 @@
-include
-infile
-libft
-LICENSE
-Makefile
-obj
-outfile
-pipex
-README.md
-src
+It has to make a pipe. It can do it with only one pipe.
