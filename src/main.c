@@ -6,37 +6,28 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/04 16:21:16 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/05 12:51:36 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "pipex.h"
 #include "libft.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <sys/wait.h>
 
-char	*check_paths(char **paths, char *cmd)
+int	free_pointer_array(char **array)
 {
-	int		i;
-	char	*cmd_path;
-	char	*suffix;
+	int	i;
 
 	i = 0;
-	// cmd_path = malloc(1);
-	// cmd_path[0] = 0;
-	suffix = ft_strjoin("/", cmd);
-	while (paths[i])
+	while (array[i])
 	{
-		cmd_path = ft_strjoin(paths[i], suffix);
-		if (!access(cmd_path, X_OK))
-		{
-			free(suffix);
-			return (cmd_path);
-		}
-		free(cmd_path);
+		free(array[i]);
 		i++;
 	}
-	free(suffix);
+	free(array);
 	return (0);
 }
 
@@ -56,48 +47,74 @@ char	**get_paths(char **envp)
 	return (paths);
 }
 
-// void	pipex(int fd1, int fd2)
-// {
-// 	int		end[2];
-// 	pid_t	parent;
+char	*get_path(char **envp, char *cmd)
+{
+	int		i;
+	char	*cmd_path;
+	char	*suffix;
+	char	**paths;
 
-// 	pipe(end);
-// 	parent = fork();
-// 	if (parent < 0)
-// 		return (perror("Fork: "));
-// 	if (!parent)
-// 		ft_printf("child\n");
-// 	else
-// 		ft_printf("parent\n");
-// }
+	i = 0;
+	paths = get_paths(envp);
+	suffix = ft_strjoin("/", cmd);
+	while (paths[i])
+	{
+		cmd_path = ft_strjoin(paths[i], suffix);
+		if (!access(cmd_path, X_OK))
+		{
+			// ft_printf("%s\n", cmd_path);
+			free(suffix);
+			free_pointer_array(paths);
+			return (cmd_path);
+		}
+		free(cmd_path);
+		i++;
+	}
+	free_pointer_array(paths);
+	free(suffix);
+	return (0);
+}
+
+void	pipex(int fd1, int fd2, char **argv, char **envp)
+{
+	int		end[2];
+	pid_t	pid;
+
+	pipe(end);
+	pid = fork();
+	if (pid < 0)
+		return (perror("Fork: "));
+	if (pid == 0)
+	{
+		// ft_printf("child\n");
+		first_process(fd1, end, argv, envp);
+	}
+	else
+	{
+		waitpid(pid, NULL, 0);
+		// ft_printf("parent, %i\n", fd2);
+		last_process(fd2, end, argv, envp);
+	}
+	// close(end[0]);
+	// close(end[1]);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		len;
-	pid_t	id;
-	char	**paths;
-	char	*bin_path;
+	// int		len;
+	int		fds[2];
 	// char * const	args[] = {NULL};
 
-	bin_path = 0;
-	paths = get_paths(envp);
-	bin_path = check_paths(paths, argv[1]);
-	if (argc > 1)
+	fds[0] = open("./infile", O_RDONLY);
+	fds[1] = open("./outfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (argc > 4)
 	{
-		len = ft_strlen(argv[1]);
-		write(1, argv[1], len);
-		write(1, "\n", 1);
-		if (!bin_path)
-		{
-			ft_printf("No executable found.\n");
-			return (0);
-		}
-		id = fork();
-		if (id == 0)
-		{
-			ft_printf("I am child\n");
-			execve(bin_path, &argv[1], envp);
-		}
+		// len = ft_strlen(argv[1]);
+		// write(1, argv[1], len);
+		// write(1, "\n", 1);
+		pipex(fds[0], fds[1], argv, envp);
 	}
+	close(fds[0]);
+	close(fds[1]);
 	return (0);
 }

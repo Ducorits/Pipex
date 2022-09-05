@@ -18,7 +18,7 @@ NAME		=	pipex
 
 LIBFT		=	libft/libft.a
 
-SRCS		=	main.c
+SRCS		=	main.c process.c
 
 INC			=	-I ./include
 
@@ -29,7 +29,7 @@ COMPILED	=	0
 DONE_OBJS	=	$(wildcard obj/*.o)
 
 ifeq ($(words $(filter-out $(DONE_OBJS), $(OBJS))), 0)
-TO_COMPILE	=	1
+TO_COMPILE	=	$(words $(OBJS))
 else
 TO_COMPILE	=	$(words $(filter-out $(DONE_OBJS), $(OBJS)))
 endif
