@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/15 14:10:43 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/06/08 15:14:20 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/06 21:10:09 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dstlen = ft_strlen(dst);
 	if (dstlen >= dstsize)
 		return (srclen + dstsize);
-	while (src[i] != '\0' && dstsize - dstlen - 1 > i)
+	if (src && dst)
 	{
-		dst[dstlen + i] = src[i];
-		i++;
+		while (src[i] != '\0' && dstsize - dstlen - 1 > i)
+		{
+			dst[dstlen + i] = src[i];
+			i++;
+		}
+		dst[dstlen + i] = '\0';
 	}
-	dst[dstlen + i] = '\0';
 	return (srclen + dstlen);
 }

@@ -18,7 +18,7 @@ NAME		=	pipex
 
 LIBFT		=	libft/libft.a
 
-SRCS		=	main.c process.c
+SRCS		=	main.c utils.c
 
 INC			=	-I ./include
 
