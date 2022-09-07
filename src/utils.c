@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 11:31:24 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/06 21:15:20 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/07 20:45:32 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	write_error(char *str1, char *str2, char *str3)
 	int		len;
 	char	*error;
 
-	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 2;
+	if (!str3)
+		len = ft_strlen(str1) + ft_strlen(str2) + 2;
+	else
+		len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 2;
 	error = malloc(sizeof(char) * len);
 	if (!error)
 	{
@@ -29,7 +32,8 @@ void	write_error(char *str1, char *str2, char *str3)
 	}
 	ft_strlcpy(error, str1, len);
 	ft_strlcat(error, str2, len);
-	ft_strlcat(error, str3, len);
+	if (str3)
+		ft_strlcat(error, str3, len);
 	ft_strlcat(error, "\n", len);
 	write(STDERR_FILENO, error, len);
 	free(error);
@@ -83,7 +87,7 @@ char	*check_paths(char **envp, char *cmd)
 	cmd_path = 0;
 	paths = get_paths(envp);
 	suffix = ft_strjoin("/", cmd);
-	if (ft_strncmp("./", cmd, 2) && paths && suffix)
+	if (ft_strncmp("./", cmd, 2) && ft_strncmp("/", cmd, 1) && paths && suffix)
 	{
 		while (paths[i])
 		{
