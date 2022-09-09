@@ -50,11 +50,11 @@ all: heading status comp
 comp: $(NAME)
 
 heading:
-	@printf "$(CYAN)---< $(ORANGE)Duco's $(NAME) $(CYAN)>---\n"
+	@printf "$(CYAN)---< $(ORANGE)Duco's $(NAME) $(CYAN)>---\n$(RESET)"
 
 status:
 ifneq ($(filter $(OBJS), $(wildcard obj/*/*.o)),)
-	@printf "$(INSET)Nothing to be done.\n"
+	@printf "$(INSET)Nothing to be done.\n$(RESET)"
 endif
 
 obj/%.o: src/%.c
@@ -66,7 +66,7 @@ obj/%.o: src/%.c
 $(NAME): $(OBJS) $(LIBFT)
 	@printf "$(INSET)"
 	@$(CC) $(CFLAGS) $(INC) $^ -o $@
-	@printf "$(ORANGE)Created executable.\n"
+	@printf "$(ORANGE)Created executable.\n$(RESET)"
 
 libft:
 	@make -C libft/ SILENT=1

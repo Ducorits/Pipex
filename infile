@@ -5,7 +5,7 @@ Redirect the pipe from the output of one command to the input of the other.
 Redirect the standard input of the first command to the infile.
 Redirect the output of the second command to outfile.
 It has to close the pipes.
-
+Hello
 The input needs to be parsed.
 
 ./pipex infile "ls -la" "wc -l" outfile

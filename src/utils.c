@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 11:31:24 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/07 20:45:32 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/09 16:02:02 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "libft.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <string.h>
+#include <errno.h>
 
 void	write_error(char *str1, char *str2, char *str3)
 {
@@ -21,17 +24,19 @@ void	write_error(char *str1, char *str2, char *str3)
 	char	*error;
 
 	if (!str3)
-		len = ft_strlen(str1) + ft_strlen(str2) + 2;
+		len = ft_strlen(str1) + ft_strlen(str2) + 6;
 	else
-		len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 2;
+		len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 6;
 	error = malloc(sizeof(char) * len);
 	if (!error)
 	{
-		write(2, "Error message allocation failed\n", 33);
+		write(STDERR_FILENO, "Error message allocation failed\n", 33);
 		return ;
 	}
 	ft_strlcpy(error, str1, len);
+	ft_strlcat(error, ": ", len);
 	ft_strlcat(error, str2, len);
+	ft_strlcat(error, ": ", len);
 	if (str3)
 		ft_strlcat(error, str3, len);
 	ft_strlcat(error, "\n", len);
@@ -104,7 +109,7 @@ char	*check_paths(char **envp, char *cmd)
 	return (cmd_path);
 }
 
-char	*get_path(char **envp, char *cmd)
+char	*get_path(char **argv, char **envp, char *cmd)
 {
 	char	*cmd_path;
 
@@ -112,8 +117,16 @@ char	*get_path(char **envp, char *cmd)
 		return (0);
 	cmd_path = check_paths(envp, cmd);
 	if (cmd_path)
+	{
+		if (is_dir(argv, cmd_path))
+			return (0);
 		return (cmd_path);
+	}
 	if (!access(cmd, X_OK))
+	{
+		if (is_dir(argv, cmd))
+			return (0);
 		return (cmd);
+	}
 	return (0);
 }

@@ -114,11 +114,11 @@ all: heading status comp
 comp: $(NAME)
 
 heading:
-	@printf "$(CYAN)---< $(ORANGE)Duco's libft $(CYAN)>---\n"
+	@printf "$(CYAN)---< $(ORANGE)Duco's libft $(CYAN)>---\n$(RESET)"
 
 status:
 ifneq ($(filter $(OBJS), $(wildcard obj/*/*.o)),)
-	@printf "$(INSET)Nothing to be done.\n"
+	@printf "$(INSET)Nothing to be done.\n$(RESET)"
 endif
 
 obj/%.o: src/%.c
@@ -130,7 +130,7 @@ obj/%.o: src/%.c
 $(NAME): $(OBJS)
 	@printf "$(INSET)"
 	@ar rcs $(NAME) $(OBJS)
-	@printf "$(ORANGE)Created archive.\n"
+	@printf "$(ORANGE)Created archive.\n$(RESET)"
 
 clean: heading
 	@rm -rf obj
