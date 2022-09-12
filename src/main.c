@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/09 17:53:45 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/12 15:27:13 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <errno.h>
-
-void	at_exit(void)
-{
-	system("leaks -- pipex");
-}
 
 int	is_dir(char **argv, char *path)
 {
@@ -61,10 +56,10 @@ void	first_process(int fd, int *pipe, char **argv, char **envp)
 	{
 		if (errno != EISDIR)
 			write_error(argv[0], "command not found", args[0]);
-		free_pointer_array(args);
-		free(bin_path);
-		exit(127);
 	}
+	free_pointer_array(args);
+	free(bin_path);
+	exit(127);
 }
 
 void	last_process(int fd, int *pipe, char **argv, char **envp)
@@ -90,10 +85,10 @@ void	last_process(int fd, int *pipe, char **argv, char **envp)
 	{
 		if (errno != EISDIR)
 			write_error(argv[0], "command not found", args[0]);
-		free_pointer_array(args);
-		free(bin_path);
-		exit(127);
 	}
+	free_pointer_array(args);
+	free(bin_path);
+	exit(127);
 }
 
 int	pipex(int fd1, int fd2, char **argv, char **envp)
@@ -107,9 +102,7 @@ int	pipex(int fd1, int fd2, char **argv, char **envp)
 	if (pid < 0)
 		return (perror("Fork: "), 1);
 	if (pid == 0)
-	{
 		first_process(fd1, end, argv, envp);
-	}
 	else
 	{
 		pid = fork();
@@ -128,7 +121,6 @@ int	main(int argc, char **argv, char **envp)
 	int		fds[2];
 	int		exit_status;
 
-	atexit(at_exit);
 	if (argc == 5)
 	{
 		fds[0] = open(argv[1], O_RDONLY);

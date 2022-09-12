@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 11:31:24 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/09 16:02:02 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/09/12 15:28:16 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*check_paths(char **envp, char *cmd)
 	char	**paths;
 
 	i = 0;
-	cmd_path = 0;
+	cmd_path = NULL;
 	paths = get_paths(envp);
 	suffix = ft_strjoin("/", cmd);
 	if (ft_strncmp("./", cmd, 2) && ft_strncmp("/", cmd, 1) && paths && suffix)
@@ -119,14 +119,14 @@ char	*get_path(char **argv, char **envp, char *cmd)
 	if (cmd_path)
 	{
 		if (is_dir(argv, cmd_path))
-			return (0);
+			return (free(cmd_path), NULL);
 		return (cmd_path);
 	}
 	if (!access(cmd, X_OK))
 	{
 		if (is_dir(argv, cmd))
-			return (0);
+			return (free(cmd_path), NULL);
 		return (cmd);
 	}
-	return (0);
+	return (NULL);
 }
