@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 17:10:55 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/09/12 15:27:13 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:22:34 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 5)
 	{
-		fds[0] = open(argv[1], O_RDONLY);
+		fds[0] = open(argv[1], O_RDONLY); // open files in fork
 		if (fds[0] == -1)
 			write_error(argv[0], argv[1], strerror(errno));
 		fds[1] = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0664);
