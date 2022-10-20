@@ -6,7 +6,7 @@
 /*   By: dritsema <dritsema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:30 by dritsema      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:29:07 by dritsema      ########   odam.nl         */
+/*   Updated: 2022/10/20 10:10:32 by dritsema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	openfile(int *fd, char *path, t_redir_type type)
 	if (type == INFILE)
 		*fd = open(path, O_RDONLY);
 	if (type == OUTFILE)
-		*fd = open(path, O_WRONLY | O_CREAT, 0664);
+		*fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (*fd == -1)
 	{
 		write_error("./pipex", path, strerror(errno));
